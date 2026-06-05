@@ -134,13 +134,15 @@ class FooterResource extends Resource
             ->filters([
                 //
             ])
-            ->recordActions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ])
+                        ->recordActions([
+                    \Filament\Actions\EditAction::make(),
+                    \Filament\Actions\DeleteAction::make(),
+                ])
+                ->toolbarActions([
+                    \Filament\Actions\BulkActionGroup::make([
+                        \Filament\Actions\DeleteBulkAction::make(),
+                    ]),
+                ])
             ->defaultSort('updated_at', 'desc');
     }
 
