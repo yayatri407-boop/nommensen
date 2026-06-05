@@ -131,14 +131,14 @@ class FooterResource extends Resource
                     ->dateTime('d M Y H:i')
                     ->sortable(),
             ])
-                        ->filters([
+            ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
             ->defaultSort('updated_at', 'desc');
