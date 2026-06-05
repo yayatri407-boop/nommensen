@@ -92,15 +92,13 @@ class RektorResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
+                ->recordActions([
+            \Filament\Actions\EditAction::make(),
+            \Filament\Actions\DeleteAction::make(),
+        ])
+        ->toolbarActions([
+            \Filament\Actions\DeleteBulkAction::make(),
+        ])
             ->defaultSort('id', 'asc');
     }
 
