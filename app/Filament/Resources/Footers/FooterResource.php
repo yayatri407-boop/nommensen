@@ -7,6 +7,7 @@ use App\Models\Footer;
 use BackedEnum;
 use Filament\Forms;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -25,39 +26,31 @@ class FooterResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-                    return $schema
-                ->schema([
-                    Forms\Components\FileUpload::make('image')
-                        ->label('Logo Universitas')
-                        ->image(),
+        return $schema
+            ->schema([
+                Section::make('Informasi Umum')
+                    ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Logo Universitas')
+                            ->image(),
 
-                    Forms\Components\TextInput::make('alamat')
-                        ->required(),
+                        Forms\Components\TextInput::make('alamat')
+                            ->required(),
 
-                    Forms\Components\TextInput::make('link_gmaps')
-                        ->required(),
+                        Forms\Components\TextInput::make('link_gmaps')
+                            ->label('Link Google Maps')
+                            ->required(),
 
-                    Forms\Components\TextInput::make('email')
-                        ->email()
-                        ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required(),
 
-                    Forms\Components\TextInput::make('wa')
-                        ->required(),
+                        Forms\Components\TextInput::make('wa')
+                            ->label('WhatsApp')
+                            ->required(),
+                    ]),
 
-                    Forms\Components\TextInput::make('link_instagram')
-                        ->required(),
-
-                    Forms\Components\TextInput::make('link_youtube')
-                        ->required(),
-
-                    Forms\Components\TextInput::make('link_linkedin')
-                        ->required(),
-
-                    Forms\Components\TextInput::make('link_facebook')
-                        ->required(),
-                ]);
-
-                Forms\Components\Section::make('Sosial Media')
+                Section::make('Sosial Media')
                     ->description('Link akun resmi universitas di berbagai platform sosial media.')
                     ->icon('heroicon-o-globe-alt')
                     ->schema([
@@ -141,7 +134,7 @@ class FooterResource extends Resource
             ->filters([
                 //
             ])
-                                    ->recordActions([
+            ->recordActions([
                 \Filament\Actions\EditAction::make(),
                 \Filament\Actions\DeleteAction::make(),
             ])
@@ -167,7 +160,6 @@ class FooterResource extends Resource
 
     public static function canCreate(): bool
     {
-        // Tombol "New Footer" hanya muncul jika belum ada record sama sekali
         return ! static::getModel()::query()->exists();
     }
 }
