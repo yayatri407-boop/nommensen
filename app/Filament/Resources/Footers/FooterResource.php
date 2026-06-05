@@ -25,61 +25,37 @@ class FooterResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->schema([
-                Forms\Components\Section::make('Identitas & Lokasi')
-                    ->description('Logo, alamat, dan peta lokasi yang ditampilkan di footer website.')
-                    ->icon('heroicon-o-map-pin')
-                    ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->label('Logo Universitas')
-                            ->image()
-                            ->directory('footers')
-                            ->visibility('public')
-                            ->imagePreviewHeight('120')
-                            ->maxSize(2048)
-                            ->required()
-                            ->helperText('Logo putih/transparan paling cocok untuk footer.')
-                            ->columnSpanFull(),
+                    return $schema
+                ->schema([
+                    Forms\Components\FileUpload::make('image')
+                        ->label('Logo Universitas')
+                        ->image(),
 
-                        Forms\Components\TextInput::make('alamat')
-                            ->label('Alamat Lengkap')
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder('contoh: Jl. Pendidikan No. 1, Pematangsiantar, Sumatera Utara 21121')
-                            ->columnSpanFull(),
+                    Forms\Components\TextInput::make('alamat')
+                        ->required(),
 
-                        Forms\Components\TextInput::make('link_gmaps')
-                            ->label('Link Google Maps (Embed URL)')
-                            ->url()
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder('https://www.google.com/maps/embed?pb=...')
-                            ->helperText('Buka Google Maps → cari lokasi → Share → Embed a map → copy URL src.')
-                            ->columnSpanFull(),
-                    ]),
+                    Forms\Components\TextInput::make('link_gmaps')
+                        ->required(),
 
-                Forms\Components\Section::make('Kontak Resmi')
-                    ->description('Email dan nomor WhatsApp yang bisa dihubungi pengunjung website.')
-                    ->icon('heroicon-o-phone')
-                    ->schema([
-                        Forms\Components\TextInput::make('email')
-                            ->label('Email Kontak')
-                            ->email()
-                            ->required()
-                            ->maxLength(255)
-                            ->prefix('@')
-                            ->placeholder('contoh: info@b-university.ac.id'),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->required(),
 
-                        Forms\Components\TextInput::make('wa')
-                            ->label('Nomor WhatsApp')
-                            ->required()
-                            ->maxLength(255)
-                            ->prefix('+62')
-                            ->placeholder('contoh: 81234567890')
-                            ->helperText('Tulis tanpa angka 0 di depan dan tanpa +62 (sudah di-prefix).'),
-                    ])
-                    ->columns(2),
+                    Forms\Components\TextInput::make('wa')
+                        ->required(),
+
+                    Forms\Components\TextInput::make('link_instagram')
+                        ->required(),
+
+                    Forms\Components\TextInput::make('link_youtube')
+                        ->required(),
+
+                    Forms\Components\TextInput::make('link_linkedin')
+                        ->required(),
+
+                    Forms\Components\TextInput::make('link_facebook')
+                        ->required(),
+                ]);
 
                 Forms\Components\Section::make('Sosial Media')
                     ->description('Link akun resmi universitas di berbagai platform sosial media.')
