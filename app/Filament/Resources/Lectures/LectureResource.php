@@ -11,6 +11,9 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use UnitEnum;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 
 class LectureResource extends Resource
 {
@@ -140,15 +143,13 @@ class LectureResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
+                            ->actions([
+            EditAction::make(),
+            DeleteAction::make(),
+        ])
+        ->bulkActions([
+            DeleteBulkAction::make(),
+        ])
             ->defaultSort('nama', 'asc');
     }
 
