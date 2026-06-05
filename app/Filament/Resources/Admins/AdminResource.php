@@ -97,13 +97,13 @@ class AdminResource extends Resource
             ->filters([
                 //
             ])
-                    ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                \Filament\Actions\DeleteBulkAction::make(),
-            ])
+                ->recordActions([
+            \Filament\Actions\EditAction::make(),
+            \Filament\Actions\DeleteAction::make(),
+        ])
+        ->toolbarActions([
+            \Filament\Actions\DeleteBulkAction::make(),
+        ])
             ->defaultSort('nama', 'asc');
     }
 
