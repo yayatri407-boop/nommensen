@@ -30,32 +30,32 @@ class LectureResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('nama')
+                \Filament\Forms\Components\TextInput::make('nama')
                     ->label('Nama Lengkap')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: Dr. Ahmad Sutarno, M.Kom.'),
 
-                Forms\Components\TextInput::make('nidn')
+                \Filament\Forms\Components\TextInput::make('nidn')
                     ->label('NIDN')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: 0123456789')
                     ->helperText('Nomor Induk Dosen Nasional (10 digit).'),
 
-                Forms\Components\TextInput::make('pendidikan')
+                \Filament\Forms\Components\TextInput::make('pendidikan')
                     ->label('Riwayat Pendidikan')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: S3 Teknik Informatika — Universitas Indonesia'),
 
-                Forms\Components\TextInput::make('jabatan')
+                \Filament\Forms\Components\TextInput::make('jabatan')
                     ->label('Jabatan Fungsional')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: Lektor Kepala'),
 
-                Forms\Components\TextInput::make('email')
+                \Filament\Forms\Components\TextInput::make('email')
                     ->label('Email Dosen')
                     ->email()
                     ->required()
@@ -63,13 +63,13 @@ class LectureResource extends Resource
                     ->placeholder('contoh: ahmad@b-university.ac.id')
                     ->helperText('Email aktif untuk komunikasi resmi.'),
 
-                Forms\Components\TextInput::make('topik')
+                \Filament\Forms\Components\TextInput::make('topik')
                     ->label('Topik / Bidang Keahlian')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: Machine Learning, Data Mining'),
 
-                Forms\Components\FileUpload::make('image')
+                \Filament\Forms\Components\FileUpload::make('image')
                     ->label('Foto Dosen')
                     ->image()
                     ->directory('lectures')
@@ -87,54 +87,54 @@ class LectureResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
+                \Filament\Tables\Columns\ImageColumn::make('image')
                     ->label('Foto')
                     ->disk('public')
                     ->height(60)
                     ->circular(),
 
-                Tables\Columns\TextColumn::make('nama')
+                \Filament\Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Dosen')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
-                Tables\Columns\TextColumn::make('nidn')
+                \Filament\Tables\Columns\TextColumn::make('nidn')
                     ->label('NIDN')
                     ->searchable()
                     ->copyable()
                     ->copyMessage('NIDN disalin!')
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('jabatan')
+                \Filament\Tables\Columns\TextColumn::make('jabatan')
                     ->label('Jabatan')
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('success'),
 
-                Tables\Columns\TextColumn::make('email')
+                \Filament\Tables\Columns\TextColumn::make('email')
                     ->label('Email')
                     ->searchable()
                     ->copyable()
                     ->copyMessage('Email disalin!')
                     ->icon('heroicon-o-envelope'),
 
-                Tables\Columns\TextColumn::make('topik')
+                \Filament\Tables\Columns\TextColumn::make('topik')
                     ->label('Bidang Keahlian')
                     ->searchable()
                     ->limit(40)
                     ->tooltip(fn (?string $state): ?string => $state)
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('pendidikan')
+                \Filament\Tables\Columns\TextColumn::make('pendidikan')
                     ->label('Pendidikan')
                     ->searchable()
                     ->limit(40)
                     ->tooltip(fn (?string $state): ?string => $state)
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('created_at')
+                \Filament\Tables\Columns\TextColumn::make('created_at')
                     ->label('Ditambahkan')
                     ->dateTime('d M Y H:i')
                     ->sortable()

@@ -27,26 +27,26 @@ class AdminResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('nama')
+                \Filament\Forms\Components\TextInput::make('nama')
                     ->label('Nama Lengkap')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: Drs. Budi Santoso, M.M.'),
 
-                Forms\Components\TextInput::make('nip')
+                \Filament\Forms\Components\TextInput::make('nip')
                     ->label('NIP')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: 197505102001011001')
                     ->helperText('Nomor Induk Pegawai (boleh berupa NIP atau NIPK).'),
 
-                Forms\Components\TextInput::make('jabatan')
+                \Filament\Forms\Components\TextInput::make('jabatan')
                     ->label('Jabatan')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: Kepala Tata Usaha'),
 
-                Forms\Components\FileUpload::make('image')
+                \Filament\Forms\Components\FileUpload::make('image')
                     ->label('Foto')
                     ->image()
                     ->directory('admins')
@@ -64,31 +64,31 @@ class AdminResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
+                \Filament\Tables\Columns\ImageColumn::make('image')
                     ->label('Foto')
                     ->disk('public')
                     ->height(60)
                     ->circular(),
 
-                Tables\Columns\TextColumn::make('nama')
+                \Filament\Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Lengkap')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('nip')
+                \Filament\Tables\Columns\TextColumn::make('nip')
                     ->label('NIP')
                     ->searchable()
                     ->copyable()
                     ->copyMessage('NIP berhasil disalin!'),
 
-                Tables\Columns\TextColumn::make('jabatan')
+                \Filament\Tables\Columns\TextColumn::make('jabatan')
                     ->label('Jabatan')
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
 
-                Tables\Columns\TextColumn::make('created_at')
+                \Filament\Tables\Columns\TextColumn::make('created_at')
                     ->label('Ditambahkan')
                     ->dateTime('d M Y H:i')
                     ->sortable()

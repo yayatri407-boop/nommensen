@@ -2,71 +2,100 @@
 
 namespace App\Filament\Resources\Aboutmes;
 
-use BackedEnum;
+use App\Filament\Resources\Aboutmes\Pages;
 use App\Models\Aboutme;
+use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Table;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Filament\Tables;
+use Filament\Forms;
+use Illuminate\Support\Str;
 
 class AboutmeResource extends Resource
 {
     protected static ?string $model = Aboutme::class;
 
-    // ICON SIDEBAR
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInformationCircle;
 
-    // LABEL SIDEBAR
-    protected static ?string $navigationLabel = 'Aboutme';
-    protected static ?string $modelLabel = 'Aboutme';
-    protected static ?string $pluralModelLabel = 'Aboutme';
+    protected static ?string $navigationLabel = 'Profil Universitas';
+    protected static ?string $modelLabel = 'Profil Universitas';
+    protected static ?string $pluralModelLabel = 'Profil Universitas';
 
-    // FORM
+    protected static ?int $navigationSort = 1;
+
+
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
 
                 \Filament\Forms\Components\Textarea::make('content')
-                    ->label('Konten')
+                    ->label('Deskripsi Profil')
                     ->required()
+                    ->rows(5)
+                    ->placeholder('Tuliskan profil singkat universitas')
+                    ->helperText('Deskripsi singkat tanpa formatting.')
                     ->columnSpanFull(),
 
+
+
                 \Filament\Forms\Components\FileUpload::make('image')
-                    ->label('Gambar')
+                    ->label('Foto (Multiple)')
                     ->image()
+                    ->multiple()
+                    ->reorderable()
+                    ->maxFiles(5)
                     ->disk('public')
-                    ->directory('aboutme')
+                    ->directory('aboutmes')
                     ->visibility('public')
-                    ->imagePreviewHeight('150')
+                    ->imagePreviewHeight('120')
                     ->maxSize(2048)
-                    ->helperText('Upload gambar JPG/PNG maksimal 2MB.')
+                    ->required()
+                    ->helperText('Maks 5 foto, masing-masing 2MB.')
                     ->columnSpanFull(),
 
             ]);
     }
 
-    // TABLE
+
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
 
-                \Filament\Tables\Columns\TextColumn::make('content')
-                    ->label('Konten')
-                    ->limit(50)
-                    ->searchable()
-                    ->wrap(),
 
                 \Filament\Tables\Columns\ImageColumn::make('image')
-                    ->label('Gambar')
+                    ->label('Foto')
                     ->disk('public')
-                    ->height(60),
+                    ->height(50)
+                    ->stacked()
+                    ->limit(3)
+                    ->limitedRemainingText(),
+
+
+
+                \Filament\Tables\Columns\TextColumn::make('content')
+                    ->label('Deskripsi')
+                    ->formatStateUsing(
+                        fn (?string $state): string =>
+                        Str::limit(strip_tags($state ?? ''), 100)
+                    )
+                    ->wrap()
+                    ->searchable(),
+
+
 
                 \Filament\Tables\Columns\TextColumn::make('created_at')
-                    ->label('Dibuat')
+                    ->label('Ditambahkan')
                     ->dateTime('d M Y H:i')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+
 
                 \Filament\Tables\Columns\TextColumn::make('updated_at')
                     ->label('Diperbarui')
@@ -75,10 +104,12 @@ class AboutmeResource extends Resource
 
             ])
 
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('Edit'),
-                \Filament\Actions\DeleteAction::make()->label('Delete'),
+
+            ->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ])
+
 
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([
@@ -86,22 +117,27 @@ class AboutmeResource extends Resource
                 ]),
             ])
 
-            ->defaultSort('created_at', 'desc');
+
+            ->defaultSort('updated_at', 'desc');
     }
 
-    // RELATIONS
+
+
     public static function getRelations(): array
     {
         return [];
     }
 
-    // PAGES
+
+
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Resources\Aboutmes\Pages\ListAboutmes::route('/'),
-            'create' => \App\Filament\Resources\Aboutmes\Pages\CreateAboutme::route('/create'),
-            'edit' => \App\Filament\Resources\Aboutmes\Pages\EditAboutme::route('/{record}/edit'),
+            'index' => Pages\ListAboutmes::route('/'),
+
+            'create' => Pages\CreateAboutme::route('/create'),
+
+            'edit' => Pages\EditAboutme::route('/{record}/edit'),
         ];
     }
 }

@@ -28,14 +28,14 @@ class GreetingResource extends Resource
     {
         return $schema->schema([
 
-            Forms\Components\Textarea::make('content')
+            \Filament\Forms\Components\Textarea::make('content')
                 ->label('Cuplikan Sambutan')
                 ->placeholder('Masukkan cuplikan sambutan...')
                 ->required()
                 ->rows(3)
                 ->columnSpanFull(),
 
-            Forms\Components\FileUpload::make('image')
+            \Filament\Forms\Components\FileUpload::make('image')
                 ->label('Gambar')
                 ->image()
                 ->disk('public')
@@ -56,18 +56,18 @@ class GreetingResource extends Resource
         return $table
             ->columns([
 
-                Tables\Columns\TextColumn::make('content')
+                \Filament\Tables\Columns\TextColumn::make('content')
                     ->label('Cuplikan Sambutan')
                     ->limit(100)
                     ->searchable()
                     ->wrap(),
 
-                Tables\Columns\ImageColumn::make('image')
+                \Filament\Tables\Columns\ImageColumn::make('image')
                     ->label('Gambar')
                     ->disk('public')
                     ->height(60),
 
-                Tables\Columns\TextColumn::make('created_at')
+                \Filament\Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime('d M Y H:i')
                     ->sortable(),

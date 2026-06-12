@@ -30,22 +30,22 @@ class FooterResource extends Resource
             ->schema([
                 Section::make('Informasi Umum')
                     ->schema([
-                        Forms\Components\FileUpload::make('image')
+                        \Filament\Forms\Components\FileUpload::make('image')
                             ->label('Logo Universitas')
                             ->image(),
 
-                        Forms\Components\TextInput::make('alamat')
+                        \Filament\Forms\Components\TextInput::make('alamat')
                             ->required(),
 
-                        Forms\Components\TextInput::make('link_gmaps')
+                        \Filament\Forms\Components\TextInput::make('link_gmaps')
                             ->label('Link Google Maps')
                             ->required(),
 
-                        Forms\Components\TextInput::make('email')
+                        \Filament\Forms\Components\TextInput::make('email')
                             ->email()
                             ->required(),
 
-                        Forms\Components\TextInput::make('wa')
+                        \Filament\Forms\Components\TextInput::make('wa')
                             ->label('WhatsApp')
                             ->required(),
                     ]),
@@ -54,7 +54,7 @@ class FooterResource extends Resource
                     ->description('Link akun resmi universitas di berbagai platform sosial media.')
                     ->icon('heroicon-o-globe-alt')
                     ->schema([
-                        Forms\Components\TextInput::make('link_instagram')
+                        \Filament\Forms\Components\TextInput::make('link_instagram')
                             ->label('Instagram')
                             ->url()
                             ->required()
@@ -62,7 +62,7 @@ class FooterResource extends Resource
                             ->prefix('🌐')
                             ->placeholder('https://instagram.com/buniversity'),
 
-                        Forms\Components\TextInput::make('link_youtube')
+                        \Filament\Forms\Components\TextInput::make('link_youtube')
                             ->label('YouTube')
                             ->url()
                             ->required()
@@ -70,7 +70,7 @@ class FooterResource extends Resource
                             ->prefix('🌐')
                             ->placeholder('https://youtube.com/@buniversity'),
 
-                        Forms\Components\TextInput::make('link_linkedin')
+                        \Filament\Forms\Components\TextInput::make('link_linkedin')
                             ->label('LinkedIn')
                             ->url()
                             ->required()
@@ -78,7 +78,7 @@ class FooterResource extends Resource
                             ->prefix('🌐')
                             ->placeholder('https://linkedin.com/school/buniversity'),
 
-                        Forms\Components\TextInput::make('link_facebook')
+                        \Filament\Forms\Components\TextInput::make('link_facebook')
                             ->label('Facebook')
                             ->url()
                             ->required()
@@ -94,39 +94,39 @@ class FooterResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
+                \Filament\Tables\Columns\ImageColumn::make('image')
                     ->label('Logo')
                     ->disk('public')
                     ->height(50),
 
-                Tables\Columns\TextColumn::make('alamat')
+                \Filament\Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->limit(50)
                     ->tooltip(fn (?string $state): ?string => $state)
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('email')
+                \Filament\Tables\Columns\TextColumn::make('email')
                     ->label('Email')
                     ->searchable()
                     ->copyable()
                     ->copyMessage('Email disalin!')
                     ->icon('heroicon-o-envelope'),
 
-                Tables\Columns\TextColumn::make('wa')
+                \Filament\Tables\Columns\TextColumn::make('wa')
                     ->label('WhatsApp')
                     ->copyable()
                     ->copyMessage('Nomor WA disalin!')
                     ->icon('heroicon-o-chat-bubble-left-right')
                     ->prefix('+62 '),
 
-                Tables\Columns\TextColumn::make('link_instagram')
+                \Filament\Tables\Columns\TextColumn::make('link_instagram')
                     ->label('Instagram')
                     ->url(fn ($record) => $record->link_instagram, true)
                     ->icon('heroicon-o-link')
                     ->formatStateUsing(fn (?string $state): string => $state ? 'Buka' : '-')
                     ->color('info'),
 
-                Tables\Columns\TextColumn::make('updated_at')
+                \Filament\Tables\Columns\TextColumn::make('updated_at')
                     ->label('Diperbarui')
                     ->dateTime('d M Y H:i')
                     ->sortable(),
