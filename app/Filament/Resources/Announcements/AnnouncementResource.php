@@ -2,109 +2,125 @@
 
 namespace App\Filament\Resources\Announcements;
 
-use BackedEnum;
+use App\Filament\Resources\Announcements\Pages;
 use App\Models\Announcement;
+use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use BackedEnum;
+use UnitEnum;
 
 class AnnouncementResource extends Resource
 {
     protected static ?string $model = Announcement::class;
 
-    // ICON SIDEBAR
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-megaphone';
+    protected static ?string $navigationLabel = 'Pengumuman';
+    protected static ?string $modelLabel = 'Pengumuman';
+    protected static ?string $pluralModelLabel = 'Pengumuman';
+    protected static string|UnitEnum|null $navigationGroup = 'Publikasi';
+    protected static ?int $navigationSort = 1;
 
-    // LABEL SIDEBAR
-    protected static ?string $navigationLabel = 'Announcements';
-    protected static ?string $modelLabel = 'Announcement';
-    protected static ?string $pluralModelLabel = 'Announcements';
-
-    // FORM
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-
-                \Filament\Forms\Components\TextInput::make('title')
-                    ->label('Judul')
+                Forms\Components\TextInput::make('title')
+                    ->label('Judul Pengumuman')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->placeholder('Contoh: Jadwal UAS Semester Ganjil 2025/2026')
+                    ->helperText('Slug URL akan dibuat otomatis dari judul ini.')
+                    ->live()
+                    ->afterStateUpdated(fn ($state, callable $set) =>
+                        $set('slug', Str::slug($state))
+                    )
+                    ->columnSpanFull(),
 
-                \Filament\Forms\Components\Textarea::make('content')
-                    ->label('Konten')
+                Forms\Components\RichEditor::make('content')
+                    ->label('Isi Pengumuman')
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'bulletList',
+                        'orderedList',
+                        'link',
+                    ])
                     ->required()
                     ->columnSpanFull(),
 
-                \Filament\Forms\Components\FileUpload::make('image')
-                    ->label('Gambar')
-                    ->image()
-                    ->disk('public')
-                    ->directory('announcements')
-                    ->visibility('public')
-                    ->imagePreviewHeight('150')
-                    ->maxSize(2048)
-                    ->columnSpanFull(),
+                Forms\Components\Hidden::make('slug'),
 
+                Forms\Components\Hidden::make('users_id')
+                    ->default(auth()->id()),
             ]);
     }
 
-    // TABLE
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-
-                \Filament\Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Judul')
                     ->searchable()
-                    ->limit(50),
-
-                \Filament\Tables\Columns\TextColumn::make('content')
-                    ->label('Konten')
+                    ->sortable()
+                    ->weight('bold')
                     ->limit(50)
+                    ->tooltip(fn (?string $state): ?string => $state),
+
+                Tables\Columns\TextColumn::make('content')
+                    ->label('Cuplikan')
+                    ->formatStateUsing(fn (?string $state): string =>
+                        Str::limit(strip_tags($state ?? ''), 60)
+                    )
                     ->wrap(),
 
-                \Filament\Tables\Columns\ImageColumn::make('image')
-                    ->label('Gambar')
-                    ->disk('public')
-                    ->height(60),
-
-                \Filament\Tables\Columns\TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime('d M Y H:i')
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Dibuat Oleh')
+                    ->badge()
+                    ->color('info')
                     ->sortable(),
 
-            ])
+                Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
+                    ->copyable()
+                    ->copyMessage('Slug disalin!')
+                    ->limit(35)
+                    ->toggleable(isToggledHiddenByDefault: true),
 
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('Edit'),
-                \Filament\Actions\DeleteAction::make()->label('Delete'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Diterbitkan')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
             ])
-
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
             ->bulkActions([
-                \Filament\Actions\BulkActionGroup::make([
-                    \Filament\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-
             ->defaultSort('created_at', 'desc');
     }
 
-    // RELATIONS
     public static function getRelations(): array
     {
         return [];
     }
 
-    // PAGES
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Resources\Announcements\Pages\ListAnnouncements::route('/'),
-            'create' => \App\Filament\Resources\Announcements\Pages\CreateAnnouncement::route('/create'),
-            'edit' => \App\Filament\Resources\Announcements\Pages\EditAnnouncement::route('/{record}/edit'),
+            'index' => Pages\ListAnnouncements::route('/'),
+            'create' => Pages\CreateAnnouncement::route('/create'),
+            'edit' => Pages\EditAnnouncement::route('/{record}/edit'),
         ];
     }
 }

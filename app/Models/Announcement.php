@@ -14,9 +14,22 @@ class Announcement extends Model
         'slug',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($announcement) {
+            if (empty($announcement->slug) && !empty($announcement->title)) {
+                $announcement->slug = Str::slug($announcement->title);
+            }
+            if (empty($announcement->users_id)) {
+                $announcement->users_id = auth()->id();
+            }
+        });
+    }
+
     /**
      * Relasi: Announcement ini dimiliki oleh (dibuat oleh) satu User.
-     * belongsTo = "satu announcement milik satu user"
      */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

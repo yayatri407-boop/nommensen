@@ -27,20 +27,20 @@ class RektorResource extends Resource
     {
         return $schema
             ->schema([
-                \Filament\Forms\Components\TextInput::make('nama')
+                Forms\Components\TextInput::make('nama')
                     ->label('Nama Lengkap')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: Prof. Dr. H. Maman Suherman, M.Pd.'),
 
-                \Filament\Forms\Components\TextInput::make('jabatan')
+                Forms\Components\TextInput::make('jabatan')
                     ->label('Jabatan')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('contoh: Rektor / Wakil Rektor I / Wakil Rektor II')
                     ->helperText('Tuliskan jabatan struktural di pimpinan universitas.'),
 
-                \Filament\Forms\Components\FileUpload::make('image')
+                Forms\Components\FileUpload::make('image')
                     ->label('Foto')
                     ->image()
                     ->directory('rektors')
@@ -58,32 +58,32 @@ class RektorResource extends Resource
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\ImageColumn::make('image')
+                Tables\Columns\ImageColumn::make('image')
                     ->label('Foto')
                     ->disk('public')
                     ->height(80)
                     ->circular(),
 
-                \Filament\Tables\Columns\TextColumn::make('nama')
+                Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Lengkap')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
-                \Filament\Tables\Columns\TextColumn::make('jabatan')
+                Tables\Columns\TextColumn::make('jabatan')
                     ->label('Jabatan')
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('warning'),
 
-                \Filament\Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')
                     ->label('Ditambahkan')
                     ->dateTime('d M Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                \Filament\Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->label('Diperbarui')
                     ->dateTime('d M Y H:i')
                     ->sortable()

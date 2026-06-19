@@ -32,7 +32,7 @@ class AboutmeResource extends Resource
         return $schema
             ->schema([
 
-                \Filament\Forms\Components\Textarea::make('content')
+                Forms\Components\Textarea::make('content')
                     ->label('Deskripsi Profil')
                     ->required()
                     ->rows(5)
@@ -42,7 +42,7 @@ class AboutmeResource extends Resource
 
 
 
-                \Filament\Forms\Components\FileUpload::make('image')
+                Forms\Components\FileUpload::make('image')
                     ->label('Foto (Multiple)')
                     ->image()
                     ->multiple()
@@ -68,7 +68,7 @@ class AboutmeResource extends Resource
             ->columns([
 
 
-                \Filament\Tables\Columns\ImageColumn::make('image')
+                Tables\Columns\ImageColumn::make('image')
                     ->label('Foto')
                     ->disk('public')
                     ->height(50)
@@ -78,7 +78,7 @@ class AboutmeResource extends Resource
 
 
 
-                \Filament\Tables\Columns\TextColumn::make('content')
+                Tables\Columns\TextColumn::make('content')
                     ->label('Deskripsi')
                     ->formatStateUsing(
                         fn (?string $state): string =>
@@ -89,7 +89,7 @@ class AboutmeResource extends Resource
 
 
 
-                \Filament\Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')
                     ->label('Ditambahkan')
                     ->dateTime('d M Y H:i')
                     ->sortable()
@@ -97,7 +97,7 @@ class AboutmeResource extends Resource
 
 
 
-                \Filament\Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->label('Diperbarui')
                     ->dateTime('d M Y H:i')
                     ->sortable(),
