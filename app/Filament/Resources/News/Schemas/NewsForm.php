@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\News\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
@@ -13,18 +14,20 @@ class NewsForm
         return $schema
             ->components([
                 TextInput::make('title')
-                    ->required(),
+                    ->label('Judul')
+                    ->required()
+                    ->maxLength(255),
                 Textarea::make('content')
+                    ->label('Konten')
                     ->required()
                     ->columnSpanFull(),
-                Textarea::make('image')
+                FileUpload::make('image')
+                    ->label('Gambar')
+                    ->image()
+                    ->directory('news')
+                    ->visibility('public')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('users_id')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('slug')
-                    ->required(),
             ]);
     }
 }
