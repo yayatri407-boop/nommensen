@@ -5,6 +5,7 @@ namespace App\Filament\Resources\News\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -15,27 +16,34 @@ class NewsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('image')
+                    ->label('Foto')
+                    ->disk('public')
+                    ->height(60)
+                    ->circular(),
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->label('Judul')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->limit(50)
+                    ->tooltip(fn (?string $state): ?string => $state),
                 TextColumn::make('content')
                     ->label('Cuplikan')
                     ->formatStateUsing(fn (?string $state): string =>
-                        Str::limit(strip_tags($state ?? ''), 60)
+                        Str::limit(strip_tags($state ?? ''), 80)
                     )
-                    ->wrap(),
-                TextColumn::make('users_id')
-                    ->numeric()
+                    ->wrap()
+                    ->limit(100),
+                TextColumn::make('user.name')
+                    ->label('Penulis')
+                    ->badge()
+                    ->color('info')
                     ->sortable(),
-                TextColumn::make('slug')
-                    ->searchable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Diterbitkan')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
             ])
             ->filters([
                 //
