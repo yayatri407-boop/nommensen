@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class NewsTable
 {
@@ -16,6 +17,12 @@ class NewsTable
             ->columns([
                 TextColumn::make('title')
                     ->searchable(),
+                TextColumn::make('content')
+                    ->label('Cuplikan')
+                    ->formatStateUsing(fn (?string $state): string =>
+                        Str::limit(strip_tags($state ?? ''), 60)
+                    )
+                    ->wrap(),
                 TextColumn::make('users_id')
                     ->numeric()
                     ->sortable(),
