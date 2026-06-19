@@ -18,7 +18,7 @@ class NewsForm
                     ->required()
                     ->maxLength(255),
                 Textarea::make('content')
-                    ->label('Konten')
+                    ->label('Cuplikan')
                     ->required()
                     ->columnSpanFull(),
                 FileUpload::make('image')
